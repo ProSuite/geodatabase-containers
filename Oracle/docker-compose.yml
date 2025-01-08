@@ -11,6 +11,7 @@ services:
         volumes:
             -  ${EXCHANGE_DIR}:/opt/oracle/exchange
             -  ${ORADATA_DIR}:/opt/oracle/oradata
+            - /sql:/sql
 
         restart: unless-stopped
 

@@ -1,0 +1,4 @@
+- Docker Desktop installed
+- keycodes.ecp ready
+- libst_shapelib.so copied to root
+- Oracle Client (Client Home ) installed x64 & ORACLE_HOME set
