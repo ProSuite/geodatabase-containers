@@ -10,7 +10,7 @@ SCHEMA_OWNER_PASSWORD=xxxx
 DDX_SCHEMA_OWNER_PASSWORD=xxxx
 ```
 
-Login with oracle CR
+Login to Oracle CR
 docker login container-registry-zurich.oracle.com
 
 Make sure docker Desktop is running
