@@ -1,0 +1,9 @@
+*.log
+*.sde
+*.ecp
+/var
+.env
+# Avoid committing st_shapelib
+libst_shapelib.so
+st_shapelib.dll
+/swisstopo_compose
