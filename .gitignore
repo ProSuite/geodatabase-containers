@@ -8,3 +8,4 @@ libst_shapelib.so
 st_shapelib.dll
 /swisstopo_compose
 /logs
+*-logs.txt
