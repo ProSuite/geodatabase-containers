@@ -1,4 +1,7 @@
 - Docker Desktop installed
 - keycodes.ecp ready
-- libst_shapelib.so copied to root
+- libst_shapelib.so copied to /Oracle
 - Oracle Client (Client Home ) installed x64 & ORACLE_HOME set
+- Oracle Login (Oracle asks for username and password, but TOKEN is neaded)
+    -   get your token online at container-registry.oracle.com/
+- Make sure you accepted the conditions under container-registry.oracle.com > Databases > Enterprise
