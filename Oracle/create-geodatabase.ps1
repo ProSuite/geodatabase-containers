@@ -65,7 +65,7 @@ Invoke-SafeCommand -Command 'docker compose up --wait > logs/container-startup-l
 # Create SDE schema with mounted sh and sql scripts
 Write-Host "Oracle DB Container is up and running. Creating SDE Schema..."
 Invoke-SafeCommand -Command 'docker exec -it ${env:CONTAINER_NAME} /bin/bash /sh/create_sde_tablespace.sh'
-Write-Host "Are you happy with the SQL*Plus Output and wnat to continue? Press Enter to proceed or Ctrl+C to cancel." -BackgroundColor Cyan
+Write-Host "Are you happy with the SQL*Plus Output and want to continue? Press Enter to proceed or Ctrl+C to cancel." -BackgroundColor Cyan
 Read-Host
 
 Write-Host "Creating enterprise geodatabase..."
