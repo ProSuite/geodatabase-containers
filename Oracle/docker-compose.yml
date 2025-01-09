@@ -1,17 +1,22 @@
 services:
     db-oracle:
         build: .
-        container_name: prosuite-db-oracle-193-base
+        container_name: ${CONTAINER_NAME}
         image: prosuite-db-oracle-193
         ports:
             - "1521:1521"
             - "5500:5500"
         env_file:
             - .env
+        environment:
+            - ORACLE_SID=${TNS_NAME}
+            - ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
+
         volumes:
             -  ${EXCHANGE_DIR}:/opt/oracle/exchange
             -  ${ORADATA_DIR}:/opt/oracle/oradata
-            - /sql:/sql
+            - ./sql:/sql
+            - ./sh:/sh
 
         restart: unless-stopped
 
@@ -19,4 +24,4 @@ services:
             resources:
                 limits:
                     cpus: "4.0"
-                    memory: 2G
+                    memory: 4G

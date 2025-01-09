@@ -19,7 +19,7 @@ if (!(Test-Path -Path .\logs)) {
 docker compose up --wait > logs/container-startup-logs.txt 2>&1
 
 Write-Host "Oracle DB Container is up and running. Creating SDE Schema..."
-sqlplus sys/$env:LOCALAPPDATA$env:ORACLE_PWD@$env:TNS_NAME as sysdba "@.\sql\create_sde_tablespace.sql" $env:TNS_NAME DATA
+docker exec -it ${env:CONTAINER_NAME} /bin/bash -c /sh/create_sde_tablespace.sh
 
 Write-Host "Creating enterprise geodatabase..."
 & "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH\python.exe" ..\helpers\arcpy\create_egdb.py --DBMS ORACLE -i $env:TNS_NAME --auth DATABASE_AUTH `
