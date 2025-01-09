@@ -1,7 +1,11 @@
 - Docker Desktop installed
-- keycodes.ecp ready
+- Make sure your ArcGIS Account currently logged in is at least "Professional"
+- keycodes.ecp ready and path updated in .env
+    - Don't have a .ecp?: https://support.esri.com/en-us/knowledge-base/how-to-generate-a-keycodes-file-to-authorize-an-enterpr-000024911
+    - Get a "ArcGIS Server Basic" from my.esri.com (Licensing > Start Licensing > Enterprise > ArcGIS Server Developer)
 - libst_shapelib.so copied to /Oracle
 - Oracle Client (Client Home ) installed x64 & ORACLE_HOME set
 - Oracle Login (Oracle asks for username and password, but TOKEN is neaded)
     -   get your token online at container-registry.oracle.com/
 - Make sure you accepted the conditions under container-registry.oracle.com > Databases > Enterprise
+- Make sure AGP is running during the creation

@@ -4,12 +4,11 @@ services:
         container_name: ${CONTAINER_NAME}
         image: prosuite-db-oracle-193
         ports:
-            - "1521:1521"
-            - "5500:5500"
+            - "${ORACLE_PORT}:1521"
+            - "${ORACLE_PORT}1:5500"
         env_file:
             - .env
         environment:
-            - ORACLE_SID=${TNS_NAME}
             - ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
 
         volumes:

@@ -49,6 +49,8 @@ try:
     # Usage parameters for spatial database connection
     database_type = options.Database_type.upper()
     instance = options.Instance
+    print(instance)
+
     database = options.Database.lower()
     account_authentication = options.Account_authentication.upper()
     dbms_admin = options.Dbms_admin

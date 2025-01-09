@@ -7,7 +7,7 @@ sde_file_path = sys.argv[1]
 sde_file_name = sys.argv[2]
 
 ws = os.path.join(sde_file_path, sde_file_name)
-
+print(ws)
 arcpy.env.overwriteOutput = True
 
 arcpy.env.workspace = ws

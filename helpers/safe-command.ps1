@@ -29,7 +29,9 @@ function Invoke-SafeCommand {
         Write-Host "Command executed successfully."
     } catch {
         # Handle errors
-        Write-Error "Failed to execute command: $Command"
+        Write-Error "Failed to execute command: $Command" -ForegroundColor Red
         Write-Error $_.Exception.Message
+        exit
     }
 }
+

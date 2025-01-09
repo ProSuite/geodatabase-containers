@@ -38,7 +38,7 @@ if ($process) {
 
 # Check if esri blobs exist
 Write-Host "Checking esri blobs..."
-$envVars = @("$env:KEYCODES_FILE", "$env:SHAPELIB_SO_FILE", "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH\python.exe")
+$envVars = @("$env:KEYCODES_FILE", "$env:SHAPELIB_SO_FILE", "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH")
 
 foreach ($var in $envVars) {
         if (Test-Path $var -ErrorAction Stop) {
@@ -69,12 +69,33 @@ Write-Host "Are you happy with the SQL*Plus Output and want to continue? Press E
 Read-Host
 
 Write-Host "Creating enterprise geodatabase..."
-& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH\python.exe" ..\helpers\arcpy\create_egdb.py --DBMS ORACLE -i $env:TNS_NAME --auth DATABASE_AUTH `
+$EASY_CONNECTION_STRING = "//127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"
+
+& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_egdb.py --DBMS ORACLE -i $EASY_CONNECTION_STRING --auth DATABASE_AUTH `
     -U sys -P $env:ORACLE_PWD `
     -u sde -p $env:SDE_PASSWORD `
     -t sde_data -l $env:KEYCODES_FILE
 if ($?) { Write-Host "Enterprise Geodatabase created" }
 else { exit(1) }
 
-## WIP
+# Some follow-up scripts might require the compress_log table to exist. It is created in the first compress
+New-Item -Name "var" -ItemType Directory -Force
 
+$connectionFile = "${env:ORACLE_PDB}_as_sde.sde"
+$connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "var"
+
+Write-Host "Create SDE connection file $connectionFile"
+$CONNECTION_STRING="127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"
+& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $CONNECTION_STRING sde $env:SDE_PASSWORD
+if ($?) { Write-Host "SDE connection file created" }
+else { exit(2) }
+
+Write-Host "Compressing $connectionFile ..."
+& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH" ..\helpers\arcpy\compress.py $connectionFileFolder $connectionFile
+if ($?) { Write-Host "Geodatabase compressed" }
+else { exit(3) }
+
+# Optimize
+Invoke-SafeCommand -Command 'docker exec -it ${env:CONTAINER_NAME} /bin/bash /sh/optimize_oracle.sh'
+
+Write-Host "Geodatabase setup completed" -ForegroundColor Green
