@@ -1,30 +1,18 @@
-.env example
+# ESRI Geodatabase Containers
+This repo contains geodatabase docker containers for oracle and postgres.
 
-```
-CONTAINER_NAME=prosuite-db-oracle-193-base
+## Prerequisites
+- Docker Desktop is installed (https://docs.docker.com/desktop/)
+- ArcGIS Account with "Professional" license or higher (Needed for ArcPy).
+- A keycodes file to authorize "ArcGIS Server Basic" (Needed for the spatial extension in the db.)
+    - How to generate keycodes files: https://support.esri.com/en-us/knowledge-base/how-to-generate-a-keycodes-file-to-authorize-an-enterpr-000024911
+    - You can get a .prvc file on my.esri.com (Licensing > Start Licensing > Enterprise > Developer for ArcGIS Server)
 
-ORACLE_PWD=xxxx
-ORACLE_PDB=ORCLPDB1
-SCHEMA_OWNER=Schema_Owner
-SCHEMA_OWNER2=Schema_Owner2
-SCHEMA_OWNER_PASSWORD=xxxx
-SDE_PASSWORD=xxxx
+## Building the database containers
+After all of the above prerequisites are fullfilled you can refer to the readme in the respective db folders (oracle or postgres) on how to build the containers.
 
+## License
+MIT License
 
-# Only capitalized Alpha-Numeric Chars allowed (no - _ . ...)
-TNS_NAME=ORACLEBASE
-
-# Oracle Paths
-EXCHANGE_DIR=C:\\bin\\oracle\\exchange
-ORADATA_DIR=C:\\bin\\oracle\\oradata
-
-# esri blobs
-KEYCODES_FILE=C:\\Program Files\\ESRI\\License10.8\\sysgen\\keycodes
-SHAPELIB_SO_FILE=.\\libst_shapelib.so
-ARCPY_ENV_PATH=\\Programs\\ArcGIS\\Pro\\bin\\Python\\envs\\arcgispro-py3
-```
-
-Login to Oracle CR
-docker login container-registry-zurich.oracle.com
-
-Make sure docker Desktop is running
+## Contribute
+TBD
