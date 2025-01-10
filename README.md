@@ -11,6 +11,8 @@ This repo contains geodatabase docker containers for oracle and postgres.
 ## Building the database containers
 After all of the above prerequisites are fullfilled you can refer to the readme in the respective db folders (oracle or postgres) on how to build the containers.
 
+**Important:** Do not push any of the built containers into a public container registry, because they will contain your ArcGIS Server license.
+
 ## License
 MIT License
 
