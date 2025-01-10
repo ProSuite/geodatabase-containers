@@ -1,2 +1,2 @@
 #!/bin/bash
-sqlplus / as sysdba '@/sql/create_sde_tablespace.sql' $TNS_NAME $ORACLE_PDB
+sqlplus / as sysdba '@/sql/create_sde_tablespace.sql' $ORACLE_SID $ORACLE_PDB

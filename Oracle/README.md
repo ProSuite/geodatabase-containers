@@ -8,4 +8,7 @@
 - Oracle Login (Oracle asks for username and password, but TOKEN is neaded)
     -   get your token online at container-registry.oracle.com/
 - Make sure you accepted the conditions under container-registry.oracle.com > Databases > Enterprise
-- Make sure AGP is running during the creation
+- Make sure AGP is logged in (to make sure, keep it running) during the creation
+- If you created a container before, you might want to delete
+    - EXCHANGE_DIR=C:\\bin\\oracle\\exchange
+    - ORADATA_DIR=C:\\bin\\oracle\\oradata

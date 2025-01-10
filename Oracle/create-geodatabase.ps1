@@ -57,10 +57,7 @@ Invoke-SafeCommand -Command 'docker login container-registry-zurich.oracle.com'
 
 # Build Container
 Write-Host "Building Oracle Container..."
-if (!(Test-Path -Path .\logs)) {
-    New-Item -ItemType Directory -Path .\logs
-}
-Invoke-SafeCommand -Command 'docker compose up --wait > logs/container-startup-logs.txt 2>&1'
+Invoke-SafeCommand -Command 'docker compose up --wait'
 
 # Create SDE schema with mounted sh and sql scripts
 Write-Host "Oracle DB Container is up and running. Creating SDE Schema..."

@@ -1,7 +1,7 @@
 """
 Name: create_egdb.py
 Description: Provide connection information to a DBMS instance and create an enterprise geodatabase.
-Usage: create_egdb.py --DBMS ORACLE -i <TNS_NAME> --auth DATABASE_AUTH -U sys -P system -u sde -p <SDE_PASSWORD> -t sde_data -l <PATH_TO_KEYCODESFILE>
+Usage: create_egdb.py --DBMS ORACLE -i <EASY_CONNECTION_STRING> --auth DATABASE_AUTH -U sys -P system -u sde -p <SDE_PASSWORD> -t sde_data -l <PATH_TO_KEYCODESFILE>
 Source: https://pro.arcgis.com/en/pro-app/latest/help/data/geodatabases/manage-oracle/setup-geodatabase-oracle.htm
 """
 
