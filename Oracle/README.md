@@ -4,7 +4,7 @@
     - https://container-registry.oracle.com/ords/f?p=113:10
     - **Important:** In your account, go to Database containers and accept the terms for the enterprise container.
 - Installer for the esri extension in oracle (libst_shapelib.so)
-- To interact with the container you will need to install the Oracle Client locally (Is not needed to build the image)
+- To interact with the container you will need to install the Oracle Client locally.
     - Install Client Home from: https://www.oracle.com/database/technologies/oracle19c-windows-downloads.html (Refer to https://silentinstallhq.com/oracle-database-19c-client-silent-install-how-to-guide/ for help.)
     - Set the ORACLE_HOME environment variable
 - Have ArcGIS Pro up and running during container creation.
