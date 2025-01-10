@@ -38,7 +38,7 @@ if ($process) {
 
 # Check if esri blobs exist
 Write-Host "Checking esri blobs..."
-$envVars = @("$env:KEYCODES_FILE", "$env:SHAPELIB_SO_FILE", "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH")
+$envVars = @("$env:KEYCODES_FILE", "$env:SHAPELIB_SO_FILE", "$env:ARCPY_ENV_PATH")
 
 foreach ($var in $envVars) {
         if (Test-Path $var -ErrorAction Stop) {
@@ -68,7 +68,7 @@ Read-Host
 Write-Host "Creating enterprise geodatabase..."
 $EASY_CONNECTION_STRING = "//127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"
 
-& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_egdb.py --DBMS ORACLE -i $EASY_CONNECTION_STRING --auth DATABASE_AUTH `
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_egdb.py --DBMS ORACLE -i $EASY_CONNECTION_STRING --auth DATABASE_AUTH `
     -U sys -P $env:ORACLE_PWD `
     -u sde -p $env:SDE_PASSWORD `
     -t sde_data -l $env:KEYCODES_FILE
@@ -83,12 +83,12 @@ $connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "var"
 
 Write-Host "Create SDE connection file $connectionFile"
 $CONNECTION_STRING="127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"
-& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $CONNECTION_STRING sde $env:SDE_PASSWORD
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $CONNECTION_STRING sde $env:SDE_PASSWORD
 if ($?) { Write-Host "SDE connection file created" }
 else { exit(2) }
 
 Write-Host "Compressing $connectionFile ..."
-& "$env:LOCALAPPDATA$env:ARCPY_ENV_PATH" ..\helpers\arcpy\compress.py $connectionFileFolder $connectionFile
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\compress.py $connectionFileFolder $connectionFile
 if ($?) { Write-Host "Geodatabase compressed" }
 else { exit(3) }
 
