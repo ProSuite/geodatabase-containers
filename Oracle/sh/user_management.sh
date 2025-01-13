@@ -5,8 +5,8 @@ create_role() {
 }
 
 grant_role() {
-    local user=$1
-    local role=$2
+    local role=$1
+    local user=$2
 
     sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba GRANT $role to $user;
 }
