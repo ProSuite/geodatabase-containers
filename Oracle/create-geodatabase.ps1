@@ -16,6 +16,9 @@ Get-Content .env | ForEach-Object {
   }
 }
 
+Set-Content env:\KEYCODES_FILE "$env:LICENSE_DIR/keycodes"
+Set-Content env:\SHAPELIB_SO_FILE "$env:LICENSE_DIR/libst_shapelib.so"
+
 # Check if Docker Desktop is running
 Write-Host "Checking if Docker Desktop is running..."
 $process = Get-Process -Name "Docker Desktop" -ErrorAction SilentlyContinue
