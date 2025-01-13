@@ -27,6 +27,6 @@ create_user() {
     local role=$3
 
     sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-mgnt/create_user.sql" $user $password USERS
-    grant_role role user
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba GRANT UNLIMITED TABLESPACE TO $1;
+    grant_role $role $user
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba GRANT UNLIMITED TABLESPACE TO $user;
 }
