@@ -16,7 +16,7 @@ create_schema_owner() {
     local password=$2
     local tablespace=$3
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@../sql/user-mgnt/create_user.sql" $user $password $tablespace
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-mgnt/create_user.sql" $user $password $tablespace
     grant_role $user CONNECT
     grant_role $user RESOURCE
 }
@@ -26,5 +26,5 @@ create_user() {
     local password=$2
     local role=$3
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@../sql/user-mgnt/create_user.sql" $user $password USERS $role
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-mgnt/create_user.sql" $user $password USERS $role
 }
