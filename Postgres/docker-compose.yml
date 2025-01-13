@@ -1,0 +1,18 @@
+services:
+    db-postgres:
+        build: .
+        container_name: ${CONTAINER_NAME}
+        image: postgres-for-geodatabase
+        ports:
+            - "${POSTGRES_PORT}:5432"
+        env_file:
+            - .env
+        volumes:
+            - ./sql:/sql
+            - ./sh:/sh
+        restart: unless-stopped
+        deploy:
+            resources:
+                limits:
+                    cpus: "2.0"
+                    memory: 2G
