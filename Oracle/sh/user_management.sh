@@ -26,5 +26,5 @@ create_user() {
     local password=$2
     local role=$3
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-mgnt/create_user.sql" $user $password USERS $role
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@../sql/user-mgnt/create_user.sql" $user $password USERS $role
 }
