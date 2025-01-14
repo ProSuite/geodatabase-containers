@@ -15,6 +15,9 @@ Get-Content .env | ForEach-Object {
   }
 }
 
+Set-Content env:\KEYCODES_FILE "$env:LICENSE_DIR/keycodes"
+Set-Content env:\ST_GEOMETRY_SO_FILE "$env:LICENSE_DIR/st_geometry.so"
+
 # Check if Docker Desktop is running
 Write-Host "Checking if Docker Desktop is running..."
 $process = Get-Process -Name "Docker Desktop" -ErrorAction SilentlyContinue
@@ -61,16 +64,17 @@ if (-not (Test-Path $env:ST_GEOMETRY_SO_FILE)) {
 
 Write-Host "Building Postgres Container..."
 Invoke-SafeCommand -Command 'docker compose up --wait'
+Invoke-SafeCommand -Command 'docker exec -it ${env:CONTAINER_NAME} /bin/bash /sh/setup_shapelib.sh'
 
+$PG_CONF_PATH = "/var/lib/postgresql/data/postgresql.conf"
 
-docker cp $env:ST_GEOMETRY_SO_FILE ${env:CONTAINER_NAME}:/usr/lib/postgresql/15/lib/st_geometry.so
-docker exec -it ${env:CONTAINER_NAME} chmod 755 /usr/lib/postgresql/15/lib/st_geometry.so
-docker exec -it ${env:CONTAINER_NAME} chown postgres:postgres /usr/lib/postgresql/15/lib/st_geometry.so
+# Add shared_preload_libraries to postgresql.conf
+Write-Host "Updating postgresql.conf to include st_geometry.so..."
+docker exec -it ${env:CONTAINER_NAME} bash -c 'echo "shared_preload_libraries = \"/usr/lib/postgresql/15/lib/st_geometry.so\"" >> /var/lib/postgresql/data/postgresql.conf'
+# Restart PostgreSQL to apply changes
+Write-Host "Restarting PostgreSQL to apply configuration changes..."
+docker restart ${env:CONTAINER_NAME}
 
-
-# Set permissions for st_geometry.so
-Write-Host "Setting proper permissions for st_geometry.so..."
-docker exec -it $env:CONTAINER_NAME chmod 755 /usr/lib/postgresql/15/lib/st_geometry.so
 
 # Load st_geometry into PostgreSQL
 #Write-Host "Loading st_geometry library into PostgreSQL..."
@@ -92,19 +96,18 @@ Write-Host "Are you happy with the PostgreSQL output and want to continue? Press
 Read-Host
 
 
+
+Write-Host "Postgresql configuration updated and reloaded successfully!" -ForegroundColor Green
+
+
 Write-Host "Creating enterprise geodatabase..."
-$PG_CONNECTION_STRING = "127.0.0.1:$env:5432/$env:egdb"
-#$PG_CONNECTION_STRING = "postgres://postgres:postgres@127.0.0.1:5432/egdb"
+$PG_CONNECTION_STRING = "127.0.0.1,$env:POSTGRES_PORT"
 
-#$PG_CONNECTION_STRING = "postgres://$env:POSTGRES_USER:$env:POSTGRES@127.0.0.1:$env:POSTGRES_PORT/$env:POSTGRES_DB"
-
+# Run the enterprise geodatabase creation command
 & "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_egdb.py --DBMS POSTGRESQL -i $PG_CONNECTION_STRING --auth DATABASE_AUTH `
-    -U postgres -P $env:POSTGRES_PASSWORD `
-    -u sde -p $env:SDE_PASSWORD `
-    -l $env:KEYCODES_FILE
-    #-t sde_data
-# if ($?) { Write-Host "Enterprise Geodatabase created" }
-# else { exit(1) }
+    -U $env:POSTGRES_USER -P $env:POSTGRES_PASSWORD `
+    -D $env:POSTGRES_DB -u sde -p $env:SDE_PASSWORD `
+    -l $env:KEYCODES_FILE --type ST_GEOMETRY
 
 # Some follow-up scripts might require the compress_log table to exist. It is created in the first compress
 New-Item -Name "var" -ItemType Directory -Force
@@ -113,12 +116,14 @@ $connectionFile = "${env:POSTGRES_DB}_as_sde.sde"
 $connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "var"
 
 Write-Host "Create SDE connection file $connectionFile"
-$CONNECTION_STRING="127.0.0.1:$env:POSTGRES_PORT/$env:POSTGRES_DB"
-& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $CONNECTION_STRING sde $env:SDE_PASSWORD
+$DATABASE_PLATFORM = "PostgreSQL"  # Change this to "ORACLE" if using Oracle
+$CONNECTION_STRING = "127.0.0.1,$env:POSTGRES_PORT"
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $DATABASE_PLATFORM $CONNECTION_STRING $env:POSTGRES_USER $env:POSTGRES_PASSWORD
 if ($?) { Write-Host "SDE connection file created" }
 else { exit(2) }
 
-Write-Host "Compressing $connectionFile ..."
+
+Write-Host "Compressing $connectionFile  in $connectionFileFolder..."
 & "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\compress.py $connectionFileFolder $connectionFile
 if ($?) { Write-Host "Geodatabase compressed" }
 else { exit(3) }

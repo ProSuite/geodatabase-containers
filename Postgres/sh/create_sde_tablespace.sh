@@ -20,5 +20,5 @@ fi
 
 # Execute the SQL script to setup the tablespace and role
 echo "Running SQL script to configure tablespace and role..."
-psql -U postgres -d postgres -f /sql/create_sde_setup.sql
+psql -U postgres -d postgres -f /sql/create_sde_tablespace.sql
 

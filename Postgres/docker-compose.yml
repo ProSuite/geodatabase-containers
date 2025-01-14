@@ -8,8 +8,10 @@ services:
         env_file:
             - .env
         volumes:
+            -  ${LICENSE_DIR}:/license
             - ./sql:/sql
             - ./sh:/sh
+
         restart: unless-stopped
         deploy:
             resources:
