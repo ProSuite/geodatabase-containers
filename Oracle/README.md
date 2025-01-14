@@ -37,8 +37,8 @@ ORADATA_DIR=C:\\bin\\oracle\\oradata
 SDE_PASSWORD=xxxx3
 
 # esri dependency paths (on your local system)
-KEYCODES_FILE=\path\to\your\keycodes
-SHAPELIB_SO_FILE=\path\to\your\libst_shapelib.so
+# license dir should contain both the keycodes file and the libst_shapelib.so file
+LICENSE_DIR=C:\Program Files\ESRI\License\
 ARCPY_ENV_PATH=\path\to\your\Python\envs\arcgispro-py3\python.exe
 ```
 ### Create the container

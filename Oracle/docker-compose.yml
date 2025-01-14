@@ -14,6 +14,7 @@ services:
         volumes:
             -  ${EXCHANGE_DIR}:/opt/oracle/exchange
             -  ${ORADATA_DIR}:/opt/oracle/oradata
+            -  ${LICENSE_DIR}:/license
             - ./sql:/sql
             - ./sh:/sh
 
