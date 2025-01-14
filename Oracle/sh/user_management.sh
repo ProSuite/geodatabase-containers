@@ -1,3 +1,5 @@
+# These are a couple of utility functions that help to manage a simple user setup
+
 create_role() {
     local role=$1
 
@@ -11,7 +13,10 @@ grant_role() {
     local role=$1
     local user=$2
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "GRANT $role to $user;"
+    sqlplus sys/"$ORACLE_PWD"@localhost:1521/"$ORACLE_PDB" as sysdba <<EOF
+GRANT $role to $user;
+EXIT;
+EOF
 }
 
 create_schema_owner() {
@@ -31,5 +36,8 @@ create_user() {
 
     sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-management/create_user.sql" $user $password USERS
     grant_role $role $user
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "GRANT UNLIMITED TABLESPACE TO $user;"
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba <<EOF
+GRANT UNLIMITED TABLESPACE TO $user;
+EXIT;
+EOF
 }
