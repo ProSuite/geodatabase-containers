@@ -33,8 +33,8 @@ create_schema_owner() {
     local tablespace=$3
 
     create_user $user $password $tablespace
-    grant_role $user CONNECT
-    grant_role $user RESOURCE
+    grant_role CONNECT $user
+    grant_role RESOURCE $user 
 }
 
 create_user_with_role() {
