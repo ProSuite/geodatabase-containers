@@ -1,14 +1,14 @@
 create_role() {
     local role=$1
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba CREATE ROLE $role;
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "CREATE ROLE $role;"
 }
 
 grant_role() {
     local role=$1
     local user=$2
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba GRANT $role to $user;
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "GRANT $role to $user;"
 }
 
 create_schema_owner() {
@@ -28,5 +28,5 @@ create_user() {
 
     sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-management/create_user.sql" $user $password USERS
     grant_role $role $user
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba GRANT UNLIMITED TABLESPACE TO $user;
+    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "GRANT UNLIMITED TABLESPACE TO $user;"
 }
