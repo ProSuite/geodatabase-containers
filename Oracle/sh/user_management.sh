@@ -19,22 +19,30 @@ EXIT;
 EOF
 }
 
-create_schema_owner() {
+create_user() {
     local user=$1
     local password=$2
     local tablespace=$3
 
     sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-management/create_user.sql" $user $password $tablespace
+}
+
+create_schema_owner() {
+    local user=$1
+    local password=$2
+    local tablespace=$3
+
+    create_user $user $password $tablespace
     grant_role $user CONNECT
     grant_role $user RESOURCE
 }
 
-create_user() {
+create_user_with_role() {
     local user=$1
     local password=$2
     local role=$3
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-management/create_user.sql" $user $password USERS
+    create_user $user $password USERS
     grant_role $role $user
     sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba <<EOF
 GRANT UNLIMITED TABLESPACE TO $user;
