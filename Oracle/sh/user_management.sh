@@ -1,7 +1,10 @@
 create_role() {
     local role=$1
 
-    sqlplus sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "CREATE ROLE $role;"
+    sqlplus -s sys/"$ORACLE_PWD"@localhost:1521/"$ORACLE_PDB" as sysdba <<EOF
+CREATE ROLE $role;
+EXIT;
+EOF
 }
 
 grant_role() {
