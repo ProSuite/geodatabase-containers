@@ -15,6 +15,7 @@
 To build your container you will need to create a .env file in the Oracle folder
 Example with all the necessary variables
 ```
+IMAGE_NAME=prosuite-db-oracle-193
 CONTAINER_NAME=prosuite-db-oracle-193-base
 
 # Port that binds the oracle port to your host

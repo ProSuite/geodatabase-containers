@@ -2,7 +2,7 @@ services:
     db-oracle:
         build: .
         container_name: ${CONTAINER_NAME}
-        image: prosuite-db-oracle-193
+        image: ${IMAGE_NAME}
         ports:
             - "${ORACLE_PORT}:1521"
             - "${ORACLE_PORT}1:5500"
