@@ -3,8 +3,8 @@ import traceback
 import arcpy
 
 # As it has been set up in the image:
-shapelib_path = "/opt/oracle/esrilib/libst_shapelib.so"
-
+#shapelib_path = "/opt/oracle/esrilib/libst_shapelib.so"
+shapelib_path = "/usr/lib/postgresql/15/lib/"
 try:
     print('')
     print("Creating ST_GEOMETRY spatial type...")

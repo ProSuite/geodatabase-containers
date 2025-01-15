@@ -86,7 +86,7 @@ $connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "var"
 
 Write-Host "Create SDE connection file $connectionFile"
 $CONNECTION_STRING="127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"
-& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $CONNECTION_STRING sde $env:SDE_PASSWORD
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $DATABASE_PLATFORM $CONNECTION_STRING sde $env:SDE_PASSWORD
 if ($?) { Write-Host "SDE connection file created" }
 else { exit(2) }
 
