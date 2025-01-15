@@ -11,6 +11,9 @@ try:
     connection_file = sys.argv[1]
     print('sys user connection: \'{}\''.format(connection_file))
     sde_password = sys.argv[2]
+    # TODO: shapelib_path should be passed as an argument instead of hardcoding it as above (See below).
+    # shapelib_path = sys.argv[3]
+    # print(f"Path to shapelib file: {shapelib_path}")
 
     # https://pro.arcgis.com/en/pro-app/2.8/tool-reference/data-management/create-enterprise-geodatabase.htm
     print('tablespace: sde_data')
