@@ -10,9 +10,9 @@ def copy_datasets(source_gdb_path: str,
                   instance: str,
                   user: str,
                   password: str,
-                  db_type: Optional[str] = 'ORACLE',
-                  sde_target_folder: Optional[str] = os.path.join('sde_files'),
-                  sde_filename: Optional[str] = 'schema_user.sde'):
+                  sde_target_folder: str,
+                  sde_filename: Optional[str] = 'schema_user.sde',
+                  db_type: Optional[str] = 'ORACLE'):
     """
     Copy a gdb into a database container.
     You can either use a .env file to provide connection information to the target db,
@@ -64,27 +64,16 @@ if __name__ == '__main__':
     schema_password = sys.argv[4]
     sde_user = sys.argv[5]
     sde_password = sys.argv[6]
-
-    try:
-        sde_target_folder = sys.argv[7]
-        copy_datasets(source_gdb_path=source_gdb_path,
-                      instance=instance,
-                      user=schema_user,
-                      password=schema_password,
-                      sde_target_folder=sde_target_folder,
-                      sde_filename=f'{schema_user}.sde')
-        rebuild_system(instance=instance,
-                       user=sde_user,
-                       password=sde_password,
-                       sde_target_folder=sde_target_folder,
-                       sde_filename='sde_user.sde')
-    except IndexError:
-        copy_datasets(source_gdb_path=source_gdb_path,
-                      instance=instance,
-                      user=schema_user,
-                      password=schema_password,
-                      sde_filename=f'{schema_user}.sde')
-        rebuild_system(instance=instance,
-                       user=sde_user,
-                       password=sde_password,
-                       sde_filename='sde_user.sde')
+    sde_target_folder = sys.argv[7]
+    
+    copy_datasets(source_gdb_path=source_gdb_path,
+                  instance=instance,
+                  user=schema_user,
+                  password=schema_password,
+                  sde_target_folder=sde_target_folder,
+                  sde_filename=f'{schema_user}.sde')
+    rebuild_system(instance=instance,
+                   user=sde_user,
+                   password=sde_password,
+                   sde_target_folder=sde_target_folder,
+                   sde_filename='sde_user.sde')

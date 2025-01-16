@@ -13,7 +13,7 @@ def create_sde_file(target_folder: str, sde_filename: str, db: Literal['ORACLE',
     if not os.path.exists(target_folder):
         os.mkdir(target_folder)
 
-    print(f"Creating SDE connection file here: {target_folder}\{sde_filename}.sde")
+    print(f"Creating SDE connection file here: {target_folder}\{sde_filename}")
     arcpy.CreateDatabaseConnection_management(
         out_folder_path=target_folder,
         out_name=sde_filename,
