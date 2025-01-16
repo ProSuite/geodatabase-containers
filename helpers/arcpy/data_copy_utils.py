@@ -53,7 +53,7 @@ def rebuild_indexes(sde_file_path):
     arcpy.env.overwriteOutput = True
     arcpy.env.workspace = sde_file_path
 
-    user = arcpy.Describe(sde_file_path).connectionPropersties.user
+    user = arcpy.Describe(sde_file_path).connectionProperties.user
     datasets = arcpy.ListTables(user + "*") + arcpy.ListFeatureClasses(user + "*")
     for dataset in arcpy.ListDatasets(user + "*", "Feature"):
         # This lists feature classes but not relationship classes or topology classes.
