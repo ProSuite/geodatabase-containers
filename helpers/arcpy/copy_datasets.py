@@ -26,6 +26,8 @@ def copy_datasets(source_gdb_path: str,
     :param sde_target_folder: The folder to store the sde files that are created
     :param sde_filename: How to call the sde file of the user that copies the data.
     """
+    if not os.path.exists(sde_target_folder):
+        os.makedirs(sde_target_folder)
     create_sde_file(target_folder=sde_target_folder, sde_filename=sde_filename, db=db_type, instance=instance, user=user, pw=password)
     schema_user_sde_file_path= os.path.join(sde_target_folder, sde_filename)
 
@@ -44,7 +46,9 @@ def rebuild_system(instance,
     Rebuilds the system in that it ensures that all the indexes are set correctly.
     i.e., calls RebuildIndexes_management with the sde user and the include_system parameter set to 'System'
     """
-
+    if not os.path.exists(sde_target_folder):
+        os.makedirs(sde_target_folder)
+    
     create_sde_file(target_folder=sde_target_folder, sde_filename=sde_filename, db=db_type, instance=instance, user=user, pw=password)
     sde_user_sde_file_path= os.path.join(sde_target_folder, sde_filename)
 
