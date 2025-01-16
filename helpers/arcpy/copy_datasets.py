@@ -2,9 +2,8 @@ import os
 import sys
 from typing import Optional
 
-from helpers.arcpy.create_sde_file import create_sde_file
-import helpers.arcpy.data_copy_utils as data_copy_utils
-from helpers.arcpy.create_spatial_type import sde_password
+from create_sde_file import create_sde_file
+import data_copy_utils
 
 
 def copy_datasets(source_gdb_path: str,
@@ -85,23 +84,3 @@ if __name__ == '__main__':
                        user=sde_user,
                        password=sde_password,
                        sde_filename='sde_user.sde')
-
-
-
-
-
-
-
-
-
-
-    # db_name = os.getenv('ORACLE_PDB')
-    # port = os.getenv('ORACLE_PORT')
-    # user = os.getenv('SCHEMA_USER')
-    # password = os.getenv('SCHEMA_PW')
-    #
-    #
-    # if not (port and db_name and user and password):
-    #     raise ValueError("Must provide a db instance, user and password if connection information is not in the environment!")
-    #
-    # instance=f"127.0.0.1:{port}/{db_name}"
