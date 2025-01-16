@@ -19,6 +19,13 @@ EXIT;
 EOF
 }
 
+grant_rw_all_tables() {
+    local role1=$1
+    local role2=$2
+
+    sqlplus -s sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-management/grant_rw_all_tables.sql" $role1 $role2
+}
+
 create_user() {
     local user=$1
     local password=$2
