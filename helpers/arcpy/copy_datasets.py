@@ -76,4 +76,4 @@ if __name__ == '__main__':
                    user=sde_user,
                    password=sde_password,
                    sde_target_folder=sde_target_folder,
-                   sde_filename='sde_user.sde')
+                   sde_filename=f'sde_user_{schema_user}.sde')
