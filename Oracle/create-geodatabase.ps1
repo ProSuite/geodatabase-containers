@@ -64,11 +64,33 @@ $ImageExists = docker images -q ${env:IMAGE_NAME}
 
 if (-not $ImageExists) {
     Write-Host "Image '${env:IMAGE_NAME}' not found. Building..."
-    docker build -t ${env:IMAGE_NAME} .
 } else {
-    Write-Host "Image '$ImageName' already exists. Skipping build."
+    Write-Host "Image '${env:IMAGE_NAME}' already exists."
+
+    # Ask the user if they want to continue
+    Write-Host "Are you sure you want to rebuild the image(${env:IMAGE_NAME})? Doing so will delete all data in ${env:EXCHANGE_DIR} and ${env:ORADATA_DIR}." -ForegroundColor Green
+    $response = Read-Host "Rebuild? (y/n)"
+
+    if ($response -eq 'y' -or $response -eq 'Y') {
+        Write-Host "Continuing with the existing image..."
+    } elseif ($response -eq 'n' -or $response -eq 'N') {
+        Write-Host "Execution stopped."
+        exit
+    } else {
+        Write-Host "Invalid input. Execution stopped."
+        exit
+    }
 }
 
+# Delete exchange dir and oradata dir..
+if (Test-Path ${env:EXCHANGE_DIR}) {
+    Remove-Item -Path ${env:EXCHANGE_DIR} -Recurse -Force
+}
+if (Test-Path ${env:ORADATA_DIR}) {
+    Remove-Item -Path ${env:ORADATA_DIR} -Recurse -Force
+}
+
+docker build -t ${env:IMAGE_NAME} .
 docker run -d `
     --name ${env:CONTAINER_NAME} `
     --hostname ${env:CONTAINER_NAME} `
