@@ -1,3 +1,4 @@
+import ast
 import os
 
 import arcpy
@@ -32,21 +33,35 @@ def copy_data(source_gdb_path: str, target_sde_path:str):
         copy_esri('table', table)
 
 
-def register_data_as_versioned(sde_file_path):
+def register_data_as_versioned(sde_file_path, exceptions_list = ()):
     arcpy.env.overwriteOutput = True
     arcpy.env.workspace = sde_file_path
 
+    exceptions_list = [n.strip() for n in ast.literal_eval(exceptions_list)]
+    print(f'Exceptional datasets {exceptions_list}')
+
+    def register_as_versioned(esri_entity):
+        if dataset in exceptions_list:
+            print(f"Dont register as versioned {esri_entity}")
+            return
+
+        try:
+            arcpy.management.RegisterAsVersioned(os.path.join(sde_file_path, esri_entity), 'NO_EDITS_TO_BASE')
+        except arcpy.ExecuteError as e:
+            print(e)
+            print(f'Skipping {esri_entity}, cannot be verioned.')
+
     datasets = arcpy.ListDatasets()
     for dataset in datasets:
-        arcpy.management.RegisterAsVersioned(os.path.join(sde_file_path, dataset), 'NO_EDITS_TO_BASE')
+        register_as_versioned(dataset)
 
     feature_classes = arcpy.ListFeatureClasses()
     for feature_class in feature_classes:
-        arcpy.management.RegisterAsVersioned(os.path.join(sde_file_path, feature_class), 'NO_EDITS_TO_BASE')
+        register_as_versioned(feature_class)
 
     tables = arcpy.ListTables()
     for table in tables:
-        arcpy.management.RegisterAsVersioned(os.path.join(sde_file_path, table), 'NO_EDITS_TO_BASE')
+        register_as_versioned(table)
 
 
 def rebuild_indexes(sde_file_path):
