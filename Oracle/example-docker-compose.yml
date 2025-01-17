@@ -1,0 +1,27 @@
+services:
+    db-oracle:
+        build: .
+        container_name: ${CONTAINER_NAME}
+        image: ${IMAGE_NAME}
+        ports:
+            - "${ORACLE_PORT}:1521"
+            - "${ORACLE_PORT}1:5500"
+        env_file:
+            - .env
+        environment:
+            - ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
+
+        volumes:
+            -  ${EXCHANGE_DIR}:/opt/oracle/exchange
+            -  ${ORADATA_DIR}:/opt/oracle/oradata
+            -  ${LICENSE_DIR}:/license
+            - ./sql:/sql
+            - ./sh:/sh
+
+        restart: unless-stopped
+
+        deploy:
+            resources:
+                limits:
+                    cpus: "4.0"
+                    memory: 4G

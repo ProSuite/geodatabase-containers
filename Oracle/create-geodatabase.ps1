@@ -59,11 +59,67 @@ Invoke-SafeCommand -Command 'docker login container-registry-zurich.oracle.com'
 
 
 # Build Container
-Write-Host "Building Oracle Container..."
-Invoke-SafeCommand -Command 'docker compose -p "oracle-geodatabase-containers" up --wait'
+Write-Host "Startin an Oracle Container..." -ForegroundColor Green
+$ImageExists = docker images -q ${env:IMAGE_NAME}
+
+if (-not $ImageExists) {
+    Write-Host "Image '${env:IMAGE_NAME}' not found. Building..."
+    docker build -t ${env:IMAGE_NAME} .
+} else {
+    Write-Host "Image '$ImageName' already exists. Skipping build."
+}
+
+docker run -d `
+    --name ${env:CONTAINER_NAME} `
+    --hostname ${env:CONTAINER_NAME} `
+    -p "${env:ORACLE_PORT}`:1521" `
+    -p "${env:ORACLE_PORT}1`:5500" `
+    --env-file .env `
+    -e ORACLE_HOME="/opt/oracle/product/19c/dbhome_1" `
+    -v "${env:EXCHANGE_DIR}`:/opt/oracle/exchange" `
+    -v "${env:ORADATA_DIR}`:/opt/oracle/oradata" `
+    -v "${env:LICENSE_DIR}`:/license" `
+    -v "./sql:/sql" `
+    -v "./sh:/sh" `
+    --cpus="4.0" `
+    --memory="4G" `
+    --restart unless-stopped `
+    ${env:IMAGE_NAME}
+
+# Function to check if the container is running and healthy
+function Wait-ForContainer {
+    param (
+        [string]$containerName,
+        [int]$timeout = 300  # Timeout in seconds (adjust as needed)
+    )
+
+    $startTime = Get-Date
+    while ($true) {
+        $status = docker inspect --format "{{.State.Health.Status}}" $containerName 2>$null
+        $running = docker inspect --format "{{.State.Running}}" $containerName 2>$null
+
+        if ($status -eq "healthy") {
+            Write-Host "Container $containerName is running and db is ready!"
+            break
+        }
+
+        $elapsed = (New-TimeSpan -Start $startTime).TotalSeconds
+        if ($elapsed -ge $timeout) {
+            Write-Host "Timeout reached! The container $containerName did not start in time."
+            exit 1
+        }
+
+        Write-Host "Waiting for container $containerName to be ready... (Elapsed: $elapsed sec)"
+        Start-Sleep -Seconds 30
+    }
+}
+
+# Wait for the container to be ready
+Wait-ForContainer -containerName ${env:CONTAINER_NAME} -timeout 30000
+
 
 # Create SDE schema with mounted sh and sql scripts
-Write-Host "Oracle DB Container is up and running. Creating SDE Schema..."
+Write-Host "Oracle DB Container is up and running. Creating SDE Schema..." -ForeroundColor Green
 Invoke-SafeCommand -Command 'docker exec -it ${env:CONTAINER_NAME} /bin/bash /sh/create_sde_tablespace.sh'
 Write-Host "Are you happy with the SQL*Plus Output and want to continue? Press Enter to proceed or Ctrl+C to cancel." -BackgroundColor Cyan
 Read-Host
