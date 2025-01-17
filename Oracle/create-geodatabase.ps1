@@ -101,8 +101,8 @@ docker run -d `
     -v "${env:EXCHANGE_DIR}`:/opt/oracle/exchange" `
     -v "${env:ORADATA_DIR}`:/opt/oracle/oradata" `
     -v "${env:LICENSE_DIR}`:/license" `
-    -v "./sql:/sql" `
-    -v "./sh:/sh" `
+    -v ".\sql`:/sql" `
+    -v ".\sh`:/sh" `
     --cpus="4.0" `
     --memory="4G" `
     --restart unless-stopped `
@@ -132,11 +132,12 @@ function Wait-ForContainer {
         }
 
         Write-Host "Waiting for container $containerName to be ready... (Elapsed: $elapsed sec)"
-        Start-Sleep -Seconds 30
+        Start-Sleep -Seconds 60
     }
 }
 
 # Wait for the container to be ready
+Write-Host "Waiting for Database Creation. This may take about 20mins. Go get some coffee." -ForegroundColor Green
 Wait-ForContainer -containerName ${env:CONTAINER_NAME} -timeout 30000
 
 
