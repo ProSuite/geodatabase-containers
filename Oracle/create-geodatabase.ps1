@@ -60,7 +60,7 @@ Invoke-SafeCommand -Command 'docker login container-registry-zurich.oracle.com'
 
 # Build Container
 Write-Host "Building Oracle Container..."
-Invoke-SafeCommand -Command 'docker compose up --wait'
+Invoke-SafeCommand -Command 'docker compose -p "oracle-geodatabase-containers" up --wait'
 
 # Create SDE schema with mounted sh and sql scripts
 Write-Host "Oracle DB Container is up and running. Creating SDE Schema..."
