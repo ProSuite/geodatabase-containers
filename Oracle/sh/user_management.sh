@@ -23,7 +23,7 @@ grant_rw_all_tables() {
     local role1=$1
     local role2=$2
 
-    sqlplus -s sys/$ORACLE_PWD@localhost:1521/$ORACLE_PDB as sysdba "@/sql/user-management/grant_rw_all_tables.sql" $role1 $role2
+    sqlplus -s $SCHEMA_USER/$SCHEMA_PW@localhost:1521/$ORACLE_PDB "@/sql/user-management/grant_rw_all_tables.sql" $role1 $role2
 }
 
 create_user() {
