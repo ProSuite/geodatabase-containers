@@ -65,15 +65,16 @@ if __name__ == '__main__':
     sde_user = sys.argv[5]
     sde_password = sys.argv[6]
     sde_target_folder = sys.argv[7]
-    
+    img_name = sys.argv[8]
+
     copy_datasets(source_gdb_path=source_gdb_path,
                   instance=instance,
                   user=schema_user,
                   password=schema_password,
                   sde_target_folder=sde_target_folder,
-                  sde_filename=f'{schema_user}_{instance}')
+                  sde_filename=f'{schema_user}_{img_name}.sde')
     rebuild_system(instance=instance,
                    user=sde_user,
                    password=sde_password,
                    sde_target_folder=sde_target_folder,
-                   sde_filename=f'sde_user_{schema_user}_{instance}')
+                   sde_filename=f'sde_user_{schema_user}_{img_name}.sde')
