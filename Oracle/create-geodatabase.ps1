@@ -72,7 +72,7 @@ if (-not $ImageExists) {
     $response = Read-Host "Rebuild? (y/n)"
 
     if ($response -eq 'y' -or $response -eq 'Y') {
-        Write-Host "Continuing with the existing image..."
+        Write-Host "Building the new image..."
     } elseif ($response -eq 'n' -or $response -eq 'N') {
         Write-Host "Execution stopped."
         exit

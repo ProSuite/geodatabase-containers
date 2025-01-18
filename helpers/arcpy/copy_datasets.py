@@ -71,9 +71,9 @@ if __name__ == '__main__':
                   user=schema_user,
                   password=schema_password,
                   sde_target_folder=sde_target_folder,
-                  sde_filename=f'{schema_user}.sde')
+                  sde_filename=f'{schema_user}_{instance}.sde')
     rebuild_system(instance=instance,
                    user=sde_user,
                    password=sde_password,
                    sde_target_folder=sde_target_folder,
-                   sde_filename=f'sde_user_{schema_user}.sde')
+                   sde_filename=f'sde_user_{schema_user}_{instance}.sde')
