@@ -59,7 +59,7 @@ Invoke-SafeCommand -Command 'docker login container-registry-zurich.oracle.com'
 
 
 # Build Container
-Write-Host "Startin an Oracle Container..." -ForegroundColor Green
+Write-Host "Starting an Oracle Container..." -ForegroundColor Green
 $ImageExists = docker images -q ${env:IMAGE_NAME}
 
 if (-not $ImageExists) {
@@ -161,16 +161,22 @@ else { exit(1) }
 New-Item -Name "var" -ItemType Directory -Force
 
 $connectionFile = "${env:ORACLE_PDB}_as_sde.sde"
-$connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "var"
+$connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "sde_connections"
+
+if (!(Test-Path -Path $connectionFileFolder)) {
+    New-Item -ItemType Directory -Path $connectionFileFolder | Out-Null
+    }
 
 Write-Host "Create SDE connection file $connectionFile"
 $CONNECTION_STRING="127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"
-& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $DATABASE_PLATFORM $CONNECTION_STRING sde $env:SDE_PASSWORD
+$DATABASE_PLATFORM = "ORACLE"
+$SDE_USER = "sde"
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\create_sde_file.py $connectionFileFolder $connectionFile $DATABASE_PLATFORM $CONNECTION_STRING $SDE_USER $env:SDE_PASSWORD
 if ($?) { Write-Host "SDE connection file created" }
 else { exit(2) }
 
 Write-Host "Compressing $connectionFile ..."
-& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\compress.py $connectionFileFolder $connectionFile
+& "$env:ARCPY_ENV_PATH" ..\helpers\arcpy\compress_gdb.py $connectionFileFolder $connectionFile
 if ($?) { Write-Host "Geodatabase compressed" }
 else { exit(3) }
 
