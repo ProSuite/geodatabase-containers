@@ -27,9 +27,14 @@ grant_rw_all_tables() {
     local role1=$1
     local role2=$2
     local pdb_var=${3:-ORACLE_PDB}
-    local pdb_value=${!pdb_var}
+    local schema_user_var=${4:-SCHEMA_USER}
+    local schema_pw_var=${5:-SCHEMA_PW}
 
-    sqlplus -s $SCHEMA_USER/$SCHEMA_PW@localhost:1521/$pdb_value "@/sql/user-management/grant_rw_all_tables.sql" $role1 $role2
+    local pdb_value=${!pdb_var}
+    local schema_user_value=${!schema_user_var}
+    local schema_pw_value=${!schema_pw_var}
+
+    sqlplus -s $schema_user_value/$schema_pw_value@localhost:1521/$pdb_value "@/sql/user-management/grant_rw_all_tables.sql" $role1 $role2
 }
 
 create_user() {
