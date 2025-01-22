@@ -7,6 +7,12 @@ import os
 def create_sde_file(target_folder: str, sde_filename: str, db: Literal['ORACLE', 'POSTGRESQL'], instance: str, user: str, pw: str) -> None:
     """
     Creates an SDE connection file to load a connection.
+    :param target_folder: The folder in which to store the file
+    :param sde_filename: The name of the file (Must be unique within the target folder)
+    :param db: The db to which the connection is made
+    :param instance: A db connection string as is defined in arcpy.CreateDataBaseConnection_management
+    :param user: User for which to create the connection
+    :param pw: Password of the user
     """
     arcpy.env.overwriteOutput = True
 

@@ -2,30 +2,34 @@ import sys
 import traceback
 import arcpy
 
-# As it has been set up in the image:
-#shapelib_path = "/opt/oracle/esrilib/libst_shapelib.so"
-shapelib_path = "/usr/lib/postgresql/15/lib/"
-try:
-    print('')
-    print("Creating ST_GEOMETRY spatial type...")
-    connection_file = sys.argv[1]
-    print('sys user connection: \'{}\''.format(connection_file))
-    sde_password = sys.argv[2]
-    # TODO: shapelib_path should be passed as an argument instead of hardcoding it as above (See below).
-    # shapelib_path = sys.argv[3]
-    # print(f"Path to shapelib file: {shapelib_path}")
 
-    # https://pro.arcgis.com/en/pro-app/2.8/tool-reference/data-management/create-enterprise-geodatabase.htm
-    print('tablespace: sde_data')
-    tablespace = "sde_data"
+def create_spatial_type(connection_file, sde_password, shapelib_path="/usr/lib/postgresql/15/lib/", tablespace = "sde_data"):
+    """
+    Function that creates the spatial type on a db.
+    Note: Standard arguments for shapelib_path and tablespace are arguments that were hardcoded in old implementation.
+    :param connection_file: Path to an sde connection file to the db.
+    :param sde_password: Password for the schema_owner (i.e. Password for the user in the sde file).
+    :param shapelib_path: Path to the shapelib file on the container.
+    :param tablespace: The tablespace in which to create the spatial type.
+    """
+    print("Creating ST_GEOMETRY spatial type...")
     arcpy.CreateSpatialType_management(connection_file,sde_password,tablespace,shapelib_path)
 
-    for i in range(arcpy.GetMessageCount()):
-        arcpy.AddReturnMessage(i)
-    print('')
+if __name__ == '__main__':
+    connection_file = sys.argv[1]
+    sde_password = sys.argv[2]
+    try:
+        shapelib_path = sys.argv[3]
+    except IndexError as e:
+        shapelib_path = None
+    try:
+        tablespace = sys.argv[4]
+    except IndexError as e:
+        tablespace = None
 
-except:
-    print(traceback.format_exc())
-    print('Press enter to exit')
-    input()
-    sys.exit(-1)
+    if not shapelib_path and not tablespace:
+        create_spatial_type(connection_file, sde_password)
+    elif not tablespace:
+        create_spatial_type(connection_file, sde_password, shapelib_path)
+    else:
+        raise AttributeError("")
