@@ -27,9 +27,9 @@ if __name__ == '__main__':
     except IndexError as e:
         tablespace = None
 
-    if not shapelib_path and not tablespace:
+    if shapelib_path is None and tablespace is None:
         create_spatial_type(connection_file, sde_password)
-    elif not tablespace:
+    elif tablespace is None:
         create_spatial_type(connection_file, sde_password, shapelib_path)
     else:
-        raise AttributeError("")
+        create_spatial_type(connection_file, sde_password, tablespace, shapelib_path)
