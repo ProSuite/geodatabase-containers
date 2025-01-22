@@ -5,7 +5,7 @@ create_role() {
     local pdb_var=${2:-ORACLE_PDB}  # Default to ORACLE_PDB if no second argument is passed
     local pdb_value=${!pdb_var}     # Indirect expansion to get the value of the variable name passed
 
-    sqlplus -s sys/"$ORACLE_PWD"@localhost:1521/"$pdb_value" as sysdba <<EOF
+    sqlplus -s sys/$ORACLE_PWD@localhost:1521/$pdb_value as sysdba <<EOF
 CREATE ROLE $role;
 EXIT;
 EOF
@@ -17,7 +17,7 @@ grant_role() {
     local pdb_var=${3:-ORACLE_PDB}
     local pdb_value=${!pdb_var}
 
-    sqlplus -s sys/"$ORACLE_PWD"@localhost:1521/"$pdb_value" as sysdba <<EOF
+    sqlplus -s sys/$ORACLE_PWD@localhost:1521/$pdb_value as sysdba <<EOF
 GRANT $role to $user;
 EXIT;
 EOF
