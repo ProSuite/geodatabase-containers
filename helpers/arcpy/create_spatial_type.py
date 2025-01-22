@@ -32,4 +32,4 @@ if __name__ == '__main__':
     elif tablespace is None:
         create_spatial_type(connection_file, sde_password, shapelib_path)
     else:
-        create_spatial_type(connection_file, sde_password, tablespace, shapelib_path)
+        create_spatial_type(connection_file, sde_password, shapelib_path, tablespace)
