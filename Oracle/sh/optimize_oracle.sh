@@ -2,6 +2,7 @@
 
 # Create log directory
 mkdir -p sql/logs
+mkdir -p /opt/oracle/esrilib && cp /license/libst_shapelib.so /opt/oracle/esrilib/libst_shapelib.so
 
 # oracle configuration parameters optimized for SDE:
 # "Configure parameters optimized for SDE"
