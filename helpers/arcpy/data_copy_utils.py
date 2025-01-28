@@ -47,8 +47,8 @@ def register_data_as_versioned(sde_file_path, exceptions_list = ()):
         try:
             arcpy.management.RegisterAsVersioned(os.path.join(sde_file_path, esri_entity), 'NO_EDITS_TO_BASE')
         except arcpy.ExecuteError as e:
-            print(e)
             print(f'Skipping {esri_entity}, cannot be verioned.')
+            print(f'esri Error thrown: {e}')
 
     datasets = arcpy.ListDatasets()
     for dataset in datasets:
