@@ -26,7 +26,7 @@ ORACLE_PORT=1521
 # ORACLE_SID: Only capitalized Alpha-Numeric Chars allowed (no - _ . ...)
 ORACLE_SID=ORACLEBASE
 ORACLE_PWD=xxxx1
-ORACLE_PDB=DATA
+ORACLE_PDB=GEODATA
 
 # Oracle Paths (Bind mounts)
 # This is where your database files will reside
