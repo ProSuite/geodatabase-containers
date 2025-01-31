@@ -68,7 +68,7 @@ if (-not $ImageExists) {
     Write-Host "Image '${env:IMAGE_NAME}' already exists."
 
     # Ask the user if they want to continue
-    Write-Host "Are you sure you want to rebuild the image(${env:IMAGE_NAME})? Doing so will delete all data in ${env:EXCHANGE_DIR} and ${env:ORADATA_DIR}." -ForegroundColor Green
+    Write-Host "Are you sure you want to rebuild the image(${env:IMAGE_NAME})? Doing so will delete all data in ${env:ORADATA_DIR}." -ForegroundColor Green
     $response = Read-Host "Rebuild? (y/n)"
 
     if ($response -eq 'y' -or $response -eq 'Y') {
@@ -82,10 +82,7 @@ if (-not $ImageExists) {
     }
 }
 
-# Delete exchange dir and oradata dir..
-if (Test-Path ${env:EXCHANGE_DIR}) {
-    Remove-Item -Path ${env:EXCHANGE_DIR} -Recurse -Force
-}
+# Delete oradata dir if it exists..
 if (Test-Path ${env:ORADATA_DIR}) {
     Remove-Item -Path ${env:ORADATA_DIR} -Recurse -Force
 }
@@ -98,7 +95,6 @@ docker run -d `
     -p "${env:ORACLE_PORT}1`:5500" `
     --env-file .env `
     -e ORACLE_HOME="/opt/oracle/product/19c/dbhome_1" `
-    -v "${env:EXCHANGE_DIR}`:/opt/oracle/exchange" `
     -v "${env:ORADATA_DIR}`:/opt/oracle/oradata" `
     -v "${env:LICENSE_DIR}`:/license" `
     -v ".\sql`:/sql" `
