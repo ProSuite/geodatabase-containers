@@ -31,9 +31,16 @@ def copy_datasets(source_gdb_path: str,
     create_sde_file(target_folder=sde_target_folder, sde_filename=sde_filename, db=db_type, instance=instance, user=user, pw=password)
     schema_user_sde_file_path= os.path.join(sde_target_folder, sde_filename)
 
+    print(f'Copying data from {source_gdb_path} to {schema_user_sde_file_path}...')
     data_copy_utils.copy_data(source_gdb_path, schema_user_sde_file_path)
+    
+    print(f'Registering data as versioned for datasets in {schema_user_sde_file_path}...')
     data_copy_utils.register_data_as_versioned(schema_user_sde_file_path)
+
+    print(f'Creating indexes for datasets in {schema_user_sde_file_path}...')
     data_copy_utils.rebuild_indexes(schema_user_sde_file_path)
+
+    print(f'Analyzing datasets in {schema_user_sde_file_path}...')
     data_copy_utils.analyze_datasets(schema_user_sde_file_path)
 
 def rebuild_system(instance,
