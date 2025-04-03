@@ -177,7 +177,4 @@ else { exit(3) }
 # Optimize
 Invoke-SafeCommand -Command 'docker exec -it ${env:CONTAINER_NAME} /bin/bash /sh/optimize_oracle.sh'
 
-Write-Host "Create Versions"
-
-
 Write-Host "Geodatabase setup completed" -ForegroundColor Green
