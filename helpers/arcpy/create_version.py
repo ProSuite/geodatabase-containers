@@ -1,5 +1,6 @@
 import os
 import traceback
+import sys
 import arcpy
 
 def create_version(sde_file_path, sde_file_name, version_name):
