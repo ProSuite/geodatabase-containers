@@ -36,11 +36,14 @@ def register_data_as_versioned(sde_file_path, exceptions_list = ()):
     arcpy.env.overwriteOutput = True
     arcpy.env.workspace = sde_file_path
 
+    if exceptions_list is None:
+        exceptions_list = ()
+
     if len(exceptions_list) > 0:
         print(f'Except datasets {exceptions_list}')
 
     def register_as_versioned(esri_entity):
-        if dataset in exceptions_list:
+        if esri_entity in exceptions_list:
             print(f"Dont register as versioned {esri_entity}")
             return
 
