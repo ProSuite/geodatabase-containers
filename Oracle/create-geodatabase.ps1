@@ -98,6 +98,7 @@ docker run -d `
     -v "${env:ORADATA_DIR}`:/opt/oracle/oradata" `
     -v "${env:LICENSE_DIR}`:/license" `
     -v ".\sql`:/sql" `
+    -v ".\sql\logs:/sql/logs" `
     -v ".\sh`:/sh" `
     --cpus="4.0" `
     --memory="4G" `

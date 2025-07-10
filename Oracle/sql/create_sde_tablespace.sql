@@ -1,5 +1,5 @@
 SET TERMOUT OFF
-SPOOL .\sql\logs\create_sde_tablespace.log
+SPOOL /sql/logs/create_sde_tablespace.log
 SET HEADING OFF
 SELECT TO_CHAR(SYSDATE, 'fmMonth DD, YYYY') TODAY FROM DUAL;
 SET HEADING ON

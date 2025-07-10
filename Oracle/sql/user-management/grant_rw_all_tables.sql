@@ -5,7 +5,7 @@
 ---    __________________________________________________________
 
 SET TERMOUT OFF
-SPOOL .\sql\logs\grant_rw_all_tables.log
+SPOOL /sql/logs/grant_rw_all_tables.log
 SET HEADING OFF
 SELECT TO_CHAR(SYSDATE, 'fmMonth DD, YYYY') TODAY FROM DUAL;
 SET HEADING ON

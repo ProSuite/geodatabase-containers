@@ -1,6 +1,6 @@
 
 SET TERMOUT OFF
-SPOOL .\host-scripts\logs\grant_unlimited_tablespace_sde.log
+SPOOL /sql/logs/grant_unlimited_tablespace_sde.log
 SET HEADING OFF
 SELECT TO_CHAR(SYSDATE, 'fmMonth DD, YYYY') TODAY FROM DUAL;
 SET HEADING ON
