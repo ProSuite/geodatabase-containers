@@ -96,8 +96,10 @@ docker run -d `
     --env-file .env `
     -e ORACLE_HOME="/opt/oracle/product/19c/dbhome_1" `
     -v "${env:ORADATA_DIR}`:/opt/oracle/oradata" `
+    -v "${env:EXCHANGE_DIR}`:/opt/oracle/exchange" `
     -v "${env:LICENSE_DIR}`:/license" `
     -v ".\sql`:/sql" `
+    -v ".\sql\logs`:/sql/logs" `
     -v ".\sh`:/sh" `
     --cpus="4.0" `
     --memory="4G" `
@@ -140,8 +142,6 @@ Wait-ForContainer -containerName ${env:CONTAINER_NAME} -timeout 30000
 # Create SDE schema with mounted sh and sql scripts
 Write-Host "Oracle DB Container is up and running. Creating SDE Schema..." -ForeroundColor Green
 Invoke-SafeCommand -Command 'docker exec -it ${env:CONTAINER_NAME} /bin/bash /sh/create_sde_tablespace.sh'
-Write-Host "Are you happy with the SQL*Plus Output and want to continue? Press Enter to proceed or Ctrl+C to cancel." -BackgroundColor Cyan
-Read-Host
 
 Write-Host "Creating enterprise geodatabase..."
 $EASY_CONNECTION_STRING = "//127.0.0.1:$env:ORACLE_PORT/$env:ORACLE_PDB"

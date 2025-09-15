@@ -12,7 +12,8 @@ def copy_datasets(source_gdb_path: str,
                   password: str,
                   sde_target_folder: str,
                   sde_filename: Optional[str] = 'schema_user.sde',
-                  db_type: Optional[str] = 'ORACLE'):
+                  db_type: Optional[str] = 'ORACLE',
+                  register_as_versioned_exception_list: Optional[tuple[str]] = None):
     """
     Copy a gdb into a database container.
     You can either use a .env file to provide connection information to the target db,
@@ -25,15 +26,23 @@ def copy_datasets(source_gdb_path: str,
     :param password: Db password
     :param sde_target_folder: The folder to store the sde files that are created
     :param sde_filename: How to call the sde file of the user that copies the data.
+    :param register_as_versioned_exception_list: A tuple of qualified feature class names that should not be registered as versioned, e.g. ('SCHEMA_OWNER.FEATURECLASS').
     """
     if not os.path.exists(sde_target_folder):
         os.makedirs(sde_target_folder)
     create_sde_file(target_folder=sde_target_folder, sde_filename=sde_filename, db=db_type, instance=instance, user=user, pw=password)
     schema_user_sde_file_path= os.path.join(sde_target_folder, sde_filename)
 
+    print(f'Copying data from {source_gdb_path} to {schema_user_sde_file_path}...')
     data_copy_utils.copy_data(source_gdb_path, schema_user_sde_file_path)
-    data_copy_utils.register_data_as_versioned(schema_user_sde_file_path)
+
+    print(f'Registering data as versioned for datasets in {schema_user_sde_file_path}...')
+    data_copy_utils.register_data_as_versioned(schema_user_sde_file_path, register_as_versioned_exception_list)
+
+    print(f'Creating indexes for datasets in {schema_user_sde_file_path}...')
     data_copy_utils.rebuild_indexes(schema_user_sde_file_path)
+
+    print(f'Analyzing datasets in {schema_user_sde_file_path}...')
     data_copy_utils.analyze_datasets(schema_user_sde_file_path)
 
 def rebuild_system(instance,
@@ -48,7 +57,7 @@ def rebuild_system(instance,
     """
     if not os.path.exists(sde_target_folder):
         os.makedirs(sde_target_folder)
-    
+
     create_sde_file(target_folder=sde_target_folder, sde_filename=sde_filename, db=db_type, instance=instance, user=user, pw=password)
     sde_user_sde_file_path= os.path.join(sde_target_folder, sde_filename)
 
@@ -58,23 +67,26 @@ def rebuild_system(instance,
 
 
 if __name__ == '__main__':
-    source_gdb_path = sys.argv[1]
-    instance = sys.argv[2]
-    schema_user = sys.argv[3]
-    schema_password = sys.argv[4]
-    sde_user = sys.argv[5]
-    sde_password = sys.argv[6]
-    sde_target_folder = sys.argv[7]
-    img_name = sys.argv[8]
+    argv = sys.argv
+    source_gdb_path = argv[1]
+    instance = argv[2]
+    schema_user = argv[3]
+    schema_password = argv[4]
+    sde_user = argv[5]
+    sde_password = argv[6]
+    sde_target_folder = argv[7]
+    img_name = argv[8]
+    exception_list = argv[9] if len(argv) > 9 else None
 
     copy_datasets(source_gdb_path=source_gdb_path,
                   instance=instance,
                   user=schema_user,
                   password=schema_password,
                   sde_target_folder=sde_target_folder,
-                  sde_filename=f'{schema_user}_{img_name}.sde')
+                  sde_filename=f'{img_name}_as_{schema_user}.sde',
+                  register_as_versioned_exception_list=exception_list)
     rebuild_system(instance=instance,
                    user=sde_user,
                    password=sde_password,
                    sde_target_folder=sde_target_folder,
-                   sde_filename=f'sde_user_{schema_user}_{img_name}.sde')
+                   sde_filename=f'{img_name}_as_{sde_user}.sde')

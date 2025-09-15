@@ -7,9 +7,9 @@
 --- ______________________________________________________
 
 SET TERMOUT OFF
-SPOOL  .\sql\logs\alter_system_parameters.log
+SPOOL  /sql/logs/alter_system_parameters.log
 SET HEADING OFF
-SELECT TO_CHAR(SYSDATE, 'fmMonth DD, YYYY') TODAY FROM DUAL;
+SELECT TO_CHAR(SYSDATE, 'DD-MON-YYYY HH24:MI:SS') TODAY FROM DUAL;
 SET HEADING ON
 SET TERMOUT ON
 

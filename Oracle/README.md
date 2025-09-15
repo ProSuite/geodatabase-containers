@@ -3,6 +3,7 @@
 - An oracle developer account for the oracle container registry:
     - https://container-registry.oracle.com/ords/f?p=113:10
     - **Important:** In your account, go to Database containers and accept the terms for the enterprise container.
+    - **Effective June 30th, 2025**: docker will not allow the use of an SSO Password for login to OCR. Please use an Auth Token associated with an SSO user. There is a big banner on their website https://container-registry.oracle.com/ords/f?p=113:10.
 - Installer for the esri extension in oracle (libst_shapelib.so)
 - To interact with the container you will need to install the Oracle Client locally.
     - Install Client Home from: https://www.oracle.com/database/technologies/oracle19c-windows-downloads.html (Refer to https://silentinstallhq.com/oracle-database-19c-client-silent-install-how-to-guide/ for help.)
