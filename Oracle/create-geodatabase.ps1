@@ -110,27 +110,41 @@ docker run -d `
 function Wait-ForContainer {
     param (
         [string]$containerName,
-        [int]$timeout = 300  # Timeout in seconds (adjust as needed)
+        [int]$timeout = 300
     )
-
     $startTime = Get-Date
+    
     while ($true) {
-        $status = docker inspect --format '{{.State.Health.Status}}' $containerName 2>$null
         $running = docker inspect --format '{{.State.Running}}' $containerName 2>$null
-
-        if ($status -eq "healthy") {
-            Write-Host "Container $containerName is running and db is ready!"
-            break
+        
+        if ($running -eq "true") {
+            # Check for health status if available
+            $healthStatus = docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' $containerName 2>$null
+            
+            if ($healthStatus -eq "healthy") {
+                Write-Host "Container $containerName is healthy!"
+                break
+            } elseif ($healthStatus -eq "no-healthcheck") {
+                # For Oracle, also check logs for "DATABASE IS READY TO USE"
+                $logs = docker logs $containerName --tail 10 2>$null
+                if ($logs -match "DATABASE IS READY TO USE|The Oracle base remains unchanged") {
+                    Write-Host "Container $containerName is ready (detected via logs)!"
+                    break
+                }
+                Write-Host "Container running, checking Oracle readiness via logs..."
+            } else {
+                Write-Host "Container running, health status: $healthStatus"
+            }
         }
-
+        
         $elapsed = (New-TimeSpan -Start $startTime).TotalSeconds
         if ($elapsed -ge $timeout) {
-            Write-Host "Timeout reached! The container $containerName did not start in time."
+            Write-Host "Timeout reached! Container $containerName did not start in time."
             exit 1
         }
-
-        Write-Host "Waiting for container $containerName to be ready... (Elapsed: $elapsed sec)"
-        Start-Sleep -Seconds 60
+        
+        Write-Host "Waiting for Oracle container $containerName... (Elapsed: $([math]::Round($elapsed, 1)) sec)"
+        Start-Sleep -Seconds 10
     }
 }
 
