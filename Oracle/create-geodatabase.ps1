@@ -113,8 +113,8 @@ function Wait-ForContainer {
 
     $startTime = Get-Date
     while ($true) {
-        $status = docker inspect --format "{{.State.Health.Status}}" $containerName 2>$null
-        $running = docker inspect --format "{{.State.Running}}" $containerName 2>$null
+        $status = docker inspect --format '{{.State.Health.Status}}' $containerName 2>$null
+        $running = docker inspect --format '{{.State.Running}}' $containerName 2>$null
 
         if ($status -eq "healthy") {
             Write-Host "Container $containerName is running and db is ready!"
