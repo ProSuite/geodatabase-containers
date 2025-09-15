@@ -96,7 +96,6 @@ docker run -d `
     --env-file .env `
     -e ORACLE_HOME="/opt/oracle/product/19c/dbhome_1" `
     -v "${env:ORADATA_DIR}`:/opt/oracle/oradata" `
-    -v "${env:EXCHANGE_DIR}`:/opt/oracle/exchange" `
     -v "${env:LICENSE_DIR}`:/license" `
     -v ".\sql`:/sql" `
     -v ".\sql\logs`:/sql/logs" `
