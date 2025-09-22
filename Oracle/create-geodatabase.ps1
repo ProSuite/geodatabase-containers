@@ -170,7 +170,7 @@ else { exit(1) }
 New-Item -Name "var" -ItemType Directory -Force
 
 $connectionFile = "${env:ORACLE_PDB}_as_sde.sde"
-$connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "sde_connections"
+$connectionFileFolder = Join-Path -Path (Get-Location) -ChildPath "sde-connections"
 
 if (!(Test-Path -Path $connectionFileFolder)) {
     New-Item -ItemType Directory -Path $connectionFileFolder | Out-Null
