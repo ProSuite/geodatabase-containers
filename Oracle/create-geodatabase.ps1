@@ -100,8 +100,8 @@ docker run -d `
     -v ".\sql`:/sql" `
     -v ".\sql\logs`:/sql/logs" `
     -v ".\sh`:/sh" `
-    --cpus="4.0" `
-    --memory="4G" `
+	--cpus="8.0" `
+	--memory="16G" `
     --restart unless-stopped `
     ${env:IMAGE_NAME}
 
