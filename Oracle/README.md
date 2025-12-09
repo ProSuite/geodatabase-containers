@@ -56,3 +56,4 @@ The create-geodatabase script uses the docker-compose.yml and the Dockerfile to 
 - sql helper scripts are run directly within the container from the two .sh scripts in the .sh folder
 - arcpy helper scripts are run on your host machine and connect to the server with an easyconncet string.
 
+If there is an "Internal Server Error" returned while "waiting for Oracle container" is displayed, it can often be fixed by adding a text file C:\Users\<YourUserName>\.wslconfig where appropriate memory and processor values need to be specified. Note that, currently, the script expects to have access to at least 16GB of RAM and 8 cpus.
