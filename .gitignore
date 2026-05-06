@@ -3,9 +3,11 @@
 *.ecp
 /var
 .env
-# Avoid committing st_shapelib
+# Avoid committing st_shapelib (Oracle)
 libst_shapelib.so
 st_shapelib.dll
+# Avoid committing st_geometry (Postgres)
+st_geometry.so
 /swisstopo_compose
 */logs
 *-logs.txt
