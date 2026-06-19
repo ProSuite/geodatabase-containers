@@ -2,7 +2,7 @@
 
 ## Additional prerequisites
 
-- Installer for the esri extension in PostgreSQL (PostGIS or relevant spatial extension)
+- Installer for the esri extension in PostgreSQL (st_geometry or PostGIS)
 - To interact with the container you will need PostgreSQL client tools installed locally.
 - Have ArcGIS Pro up and running during container creation.
 
